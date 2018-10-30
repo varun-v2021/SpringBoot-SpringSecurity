@@ -33,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		//roles the roles to require (i.e. USER, ADMIN, etc). Note, it should not start with "ROLE_" as this is automatically inserted.
 		http.authorizeRequests().antMatchers("/").permitAll().antMatchers("/welcome").hasAnyRole("USER", "ADMIN")
 		.antMatchers("/getEmployees").hasAnyRole("USER", "ADMIN").antMatchers("/addNewEmployee")
-		.hasAnyRole("ADMIN").anyRequest().authenticated()
+		.hasAnyRole("ADMIN").anyRequest().authenticated() //this will make sure the requests are passed through only on authentication
 		.and().formLogin().loginPage("/login")
 		//.defaultSuccessUrl("/welcome") //default success redirection to /welcome page
 		.successHandler(customizeAuthenticationSuccessHandler)
