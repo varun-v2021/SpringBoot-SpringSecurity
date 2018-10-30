@@ -2,7 +2,7 @@
 
 http://localhost:8888/login
 
-Login with admin credentials to goto welcome page.
+Login with admin/user/sample credentials to goto welcome or other pages.
 
 Only on successful authentication from login, will the user or admin will be able to access other urls like
 
