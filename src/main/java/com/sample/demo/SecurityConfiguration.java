@@ -31,6 +31,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 		//We are allowing anonymous access on /login so that users can authenticate. We are also securing everything else.
 		//roles the roles to require (i.e. USER, ADMIN, etc). Note, it should not start with "ROLE_" as this is automatically inserted.
+	    	//permitAll() will allow all requests to hit the server and this represents public urls, 
+	    	// authenticated() or fullyAuthenticated() makes sure redirection will happen only based on successful authentication
 		http.authorizeRequests().antMatchers("/").permitAll().antMatchers("/welcome").hasAnyRole("USER", "ADMIN")
 		.antMatchers("/getEmployees").hasAnyRole("USER", "ADMIN").antMatchers("/addNewEmployee")
 		.hasAnyRole("ADMIN").anyRequest().authenticated() //this will make sure the requests are passed through only on authentication
