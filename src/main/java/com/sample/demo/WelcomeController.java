@@ -22,6 +22,18 @@ public class WelcomeController {
 		return "welcome";
 	}
 	
+	@RequestMapping("/admin")
+	public String admin(Map<String, Object> model) {
+		model.put("admin", this.message);
+		return "admin";
+	}
+	
+	@RequestMapping("/user")
+	public String user(Map<String, Object> model) {
+		model.put("user", this.message);
+		return "user";
+	}
+	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model, String error, String logout) {
         if (error != null)
@@ -32,4 +44,22 @@ public class WelcomeController {
 
         return "login";
     }
+	
+	@RequestMapping("/error1")
+	public String errorHandler(Map<String, Object> model) {
+		model.put("error1", this.message);
+		return "error1";
+	}
+	
+	@RequestMapping("/getEmployees")
+	public String getEmployees(Map<String, Object> model) {
+		model.put("getEmployees", this.message);
+		return "getEmployees";
+	}
+	
+	@RequestMapping("/addNewEmployees")
+	public String addNewEmployees(Map<String, Object> model) {
+		model.put("addNewEmployees", this.message);
+		return "addNewEmployees";
+	}
 }

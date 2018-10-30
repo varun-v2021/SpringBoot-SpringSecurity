@@ -14,12 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+	/**************************************************************************************************************************************************/
+	// This block of commented code demos working of login page which on success sends request to /welcome request to controller
 	
-	/*@Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("user")
-		.password("password").roles("USER");
-    }*/
+	@Autowired
+	CustomAuthenticationSuccessHandler customizeAuthenticationSuccessHandler;
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -30,29 +30,34 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
 		//We are allowing anonymous access on /login so that users can authenticate. We are also securing everything else.
+		//roles the roles to require (i.e. USER, ADMIN, etc). Note, it should not start with "ROLE_" as this is automatically inserted.
 		http.authorizeRequests().antMatchers("/").permitAll().antMatchers("/welcome").hasAnyRole("USER", "ADMIN")
 		.antMatchers("/getEmployees").hasAnyRole("USER", "ADMIN").antMatchers("/addNewEmployee")
 		.hasAnyRole("ADMIN").anyRequest().authenticated()
 		.and().formLogin().loginPage("/login")
-		.defaultSuccessUrl("/welcome")
-		.failureUrl("/login.jsp?error=true")
+		//.defaultSuccessUrl("/welcome") //default success redirection to /welcome page
+		.successHandler(customizeAuthenticationSuccessHandler)
+		.failureUrl("/error1")
 		.permitAll()
 		.and().logout().permitAll();
 
 		http.csrf().disable();
-
     }
 	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder authenticationMgr) throws Exception {
-		authenticationMgr.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).authorities("ROLE_USER").and()
-				.withUser("sample").password(passwordEncoder().encode("sample")).authorities("ROLE_USER", "ROLE_ADMIN");
+		authenticationMgr.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).authorities("ROLE_ADMIN").and()
+				.withUser("sample").password(passwordEncoder().encode("sample")).authorities("ROLE_USER", "ROLE_ADMIN").and()
+				.withUser("user").password(passwordEncoder().encode("user")).authorities("ROLE_USER");
 	}
 	
 	@Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+	
+	
+	/**************************************************************************************************************************************************/
 	
 	//WORKING METHOD
 	/*@Override
